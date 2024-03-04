@@ -23,6 +23,7 @@ import datetime
 import paho.mqtt.publish as publish
 import time
 import json
+import certifi
 from configobj import ConfigObj
 from validate import Validator
 # import http.client
@@ -670,7 +671,7 @@ if config['MQTT']['message_type'] == 'all_values_in_one_message':
 	oPayloads = [{"topic":sPublishPath,"payload":json.dumps(oMetrics)}]
 
 # Publish
-publish.multiple(oPayloads, hostname=config['MQTT']['host'], port=config['MQTT']['port'], client_id=config['MQTT']['client_id'], auth={'username':config['MQTT']['user'], 'password':config['MQTT']['password']})
+publish.multiple(oPayloads, hostname=config['MQTT']['host'], port=config['MQTT']['port'], client_id=config['MQTT']['client_id'], auth={'username':config['MQTT']['user'], 'password':config['MQTT']['password']}, tls={"ca_certs":certifi.where()})
 ###################### Print some  values to Screen ###########################
 # Heatpump Type	
 print(getValueDefByIndex(78)['ValueName'],getValueDefByIndex(78)['Description'],"=", getHeatPumpType(int(aData[78])))
